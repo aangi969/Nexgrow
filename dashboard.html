@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard | Nexgrow</title>
+<meta name="description" content="Connect your wallet, accept the risk disclosure, and get your unique referral link.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  /* ---------- Nexgrow brand override: green + gold (decoupled from Nexadon's indigo) ---------- */
+  :root{
+    --gold-1:#fdf3d0;
+    --gold-2:#f2c75c;
+    --gold-3:#cf9b37;
+    --line:rgba(242,199,92,0.22);
+    --bg-0:#0a2e17;
+  }
+  .bg-fixed{background:
+    radial-gradient(ellipse 90% 60% at 50% -10%, rgba(34,197,94,0.4), transparent 62%),
+    radial-gradient(ellipse 70% 50% at 90% 15%, rgba(22,163,105,0.32), transparent 62%),
+    radial-gradient(ellipse 70% 50% at 8% 85%, rgba(34,197,94,0.3), transparent 62%),
+    linear-gradient(180deg,#0a2e17 0%,#123f20 40%,#123f20 60%,#0a2e17 100%) !important;
+  }
+  .grid-overlay{display:none !important;}
+  body{background:#0a2e17;}
+  .eyebrow{background:rgba(207,155,55,0.1) !important;}
+
+  .dash-shell{min-height:100vh;padding-top:150px;padding-bottom:100px;display:flex;flex-direction:column;align-items:center;}
+
+  /* ---------- connect prompt ---------- */
+  #connectPanel{
+    max-width:520px;width:100%;text-align:center;
+    border:1px solid var(--line);border-radius:28px;padding:56px 40px;
+    background:linear-gradient(160deg,rgba(207,155,55,0.08),rgba(255,255,255,0.015));
+  }
+  .connect-icon{
+    width:84px;height:84px;border-radius:50%;margin:0 auto 26px;
+    display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--gold-2);
+    background:linear-gradient(135deg,rgba(207,155,55,0.18),rgba(207,155,55,0.03));
+    border:1px solid var(--line);animation:floatY 4s ease-in-out infinite;
+  }
+  @keyframes floatY{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+  #connectPanel h1{font-size:1.6rem;margin-bottom:12px;font-weight:700;}
+  #connectPanel p{color:var(--text-dim);font-size:.95rem;line-height:1.7;margin-bottom:30px;font-weight:300;}
+  .connect-steps{display:flex;flex-direction:column;gap:12px;margin-top:30px;text-align:left;}
+  .connect-steps div{display:flex;align-items:center;gap:12px;font-size:.85rem;color:var(--text-dim);font-weight:300;}
+  .connect-steps i{color:var(--gold-2);width:18px;text-align:center;}
+
+  /* ---------- modal (disclosure) ---------- */
+  .modal-overlay{position:fixed;inset:0;z-index:100;background:rgba(4,18,12,0.86);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:24px;}
+  .modal-overlay.show{display:flex;}
+  @keyframes popIn{from{opacity:0;transform:translateY(16px) scale(.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+
+  /* ---------- disclosure modal ---------- */
+  .disclosure-card{width:100%;max-width:620px;max-height:86vh;display:flex;flex-direction:column;background:linear-gradient(160deg,rgba(18,63,40,0.92),rgba(13,50,34,0.97));border:1px solid var(--line);border-radius:24px;padding:34px 38px 28px;box-shadow:0 30px 90px rgba(0,0,0,0.65);animation:popIn .35s ease;}
+  .disclosure-head{display:flex;align-items:center;gap:12px;margin-bottom:6px;flex-shrink:0;}
+  .disclosure-head i{color:var(--gold-2);font-size:1.3rem;}
+  .disclosure-head h2{font-size:1.2rem;font-weight:700;}
+  .disclosure-sub{color:var(--text-dim);font-size:.82rem;margin-bottom:18px;font-weight:300;flex-shrink:0;}
+  .disclosure-body{overflow-y:auto;padding-right:12px;margin-bottom:20px;flex:1;}
+  .disclosure-body h3{font-size:.85rem;margin:14px 0 4px;color:var(--gold-2);display:flex;align-items:center;gap:8px;}
+  .disclosure-body h3::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold-2);box-shadow:0 0 8px rgba(207,155,55,0.7);flex-shrink:0;}
+  .disclosure-body h3:first-child{margin-top:0;}
+  .disclosure-body p,.disclosure-body li{color:var(--text-dim);line-height:1.65;font-size:.86rem;font-weight:300;}
+  .disclosure-body ul{padding-left:18px;margin-bottom:6px;}
+  .disclosure-final{margin-top:14px;padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(160deg,rgba(207,155,55,0.1),rgba(255,255,255,0.015));}
+  .disclosure-final p{color:#eef1f6;font-weight:500;font-size:.85rem;}
+  .disclosure-body::-webkit-scrollbar{width:6px;}
+  .disclosure-body::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px;}
+  .disclosure-agree{display:flex;align-items:flex-start;gap:10px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,0.02);margin-bottom:18px;flex-shrink:0;cursor:pointer;}
+  .disclosure-agree input{margin-top:3px;width:17px;height:17px;accent-color:var(--gold-2);cursor:pointer;flex-shrink:0;}
+  .disclosure-agree span{font-size:.84rem;color:#eef1f6;font-weight:400;line-height:1.5;}
+  .disclosure-actions{display:flex;justify-content:flex-end;flex-shrink:0;}
+  .disclosure-actions button:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none;}
+
+  /* ---------- dashboard ---------- */
+  #dashboard{display:none;width:100%;max-width:1000px;}
+  #dashboard.show{display:block;}
+  .dash-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:34px;}
+  .dash-addr{font-size:.8rem;color:var(--text-dim);background:rgba(255,255,255,0.03);border:1px solid var(--line);padding:9px 18px;border-radius:999px;display:inline-flex;align-items:center;gap:8px;}
+  .dash-addr i{color:var(--gold-2);}
+  .dash-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:30px;}
+  .stat-card{transition:border-color .25s ease, transform .25s ease, box-shadow .25s ease;}
+  .stat-card:hover{border-color:var(--gold-2);transform:translateY(-3px);box-shadow:0 12px 30px rgba(207,155,55,0.15);}
+  .stat-card i{color:var(--gold-2);font-size:1.3rem;margin-bottom:10px;display:block;}
+
+  /* ---------- rewards box ---------- */
+  .rewards-card{border:1px solid var(--line);border-radius:22px;padding:30px 34px;margin-bottom:24px;background:linear-gradient(160deg,rgba(207,155,55,0.1),rgba(255,255,255,0.015));position:relative;overflow:hidden;transition:border-color .25s ease;}
+  .rewards-card:hover{border-color:var(--gold-2);}
+  .rewards-card::after{content:'';position:absolute;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(207,155,55,0.16),transparent 70%);top:-110px;right:-90px;animation:rewSpin 20s linear infinite;pointer-events:none;}
+  @keyframes rewSpin{to{transform:rotate(360deg);}}
+  .rewards-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:18px;position:relative;}
+  .rewards-head h3{font-size:1.1rem;font-weight:600;display:flex;align-items:center;gap:10px;}
+  .rewards-head h3 i{color:var(--gold-2);}
+  .rewards-count{display:flex;align-items:center;gap:10px;padding:8px 16px;border-radius:999px;background:rgba(207,155,55,0.12);border:1px solid var(--line);}
+  .rewards-count .num{font-size:1.2rem;font-weight:800;color:var(--gold-2);}
+  .rewards-count .lab{font-size:.72rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;}
+  .rewards-detail{color:var(--text-dim);font-size:.9rem;line-height:1.7;font-weight:300;margin-bottom:16px;position:relative;}
+  .rewards-detail b{color:var(--gold-2);}
+  .rewards-bar-track{height:10px;border-radius:999px;background:rgba(255,255,255,0.06);overflow:hidden;position:relative;}
+  .rewards-bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#F2C75C,#CF9B37,#73551c);width:0%;transition:width 1s ease;box-shadow:0 0 12px rgba(207,155,55,0.6);}
+  .rewards-bar-lab{display:flex;justify-content:space-between;margin-top:8px;font-size:.76rem;color:var(--text-dim);position:relative;}
+  .rewards-bar-lab b{color:#f2f4f8;}
+  .ref-card{border:1px solid var(--line);border-radius:22px;padding:34px;background:linear-gradient(160deg,rgba(207,155,55,0.09),rgba(255,255,255,0.015));}
+  .ref-card h3{margin-bottom:6px;font-size:1.15rem;font-weight:600;display:flex;align-items:center;gap:10px;}
+  .ref-card h3 i{color:var(--gold-2);}
+  .ref-card .hint{color:var(--text-dim);font-size:.86rem;margin-bottom:20px;font-weight:300;}
+  .ref-link-row{display:flex;gap:10px;flex-wrap:wrap;}
+  .ref-link-input{flex:1;min-width:220px;padding:14px 18px;border-radius:12px;border:1px solid var(--line);background:rgba(0,0,0,0.3);color:#eef1f6;font-size:.85rem;font-family:inherit;}
+  .copy-btn{width:52px;height:52px;flex-shrink:0;padding:0;border-radius:12px;border:none;background:linear-gradient(135deg,#F2C75C,#CF9B37,#73551c);color:#f5f7ff;font-size:1.05rem;cursor:pointer;font-family:inherit;transition:transform .2s ease;display:inline-flex;align-items:center;justify-content:center;}
+  .copy-btn:hover{transform:translateY(-2px);}
+  .share-row{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap;}
+  .share-btn{padding:10px 18px;border-radius:999px;border:1px solid var(--line);color:#e9ecf3;font-size:.82rem;background:rgba(255,255,255,0.03);cursor:pointer;transition:border-color .2s ease;font-family:inherit;display:inline-flex;align-items:center;gap:8px;}
+  .share-btn:hover{border-color:var(--gold-2);}
+  .share-btn.tg i{color:#29a9eb;}
+  .share-btn.x i{color:#eef1f6;}
+  .share-btn.wa i{color:#25D366;}
+
+  /* ---------- right-click referral point menu ---------- */
+  .ref-context-menu{
+    position:fixed;z-index:200;min-width:240px;
+    background:linear-gradient(160deg,rgba(18,63,40,0.97),rgba(13,50,34,0.99));
+    border:1px solid var(--line);border-radius:16px;padding:16px 18px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.5);
+    display:none;font-size:.85rem;
+  }
+  .ref-context-menu.show{display:block;animation:popIn .18s ease;}
+  .ref-context-menu .rcm-title{display:flex;align-items:center;gap:8px;color:var(--gold-2);font-weight:600;margin-bottom:8px;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;}
+  .ref-context-menu .rcm-msg{color:#eef1f6;line-height:1.6;margin-bottom:12px;}
+  .ref-context-menu .rcm-action{
+    display:flex;align-items:center;gap:8px;width:100%;padding:10px 12px;border-radius:10px;
+    background:rgba(255,255,255,0.03);border:1px solid var(--line);color:#e9ecf3;cursor:pointer;
+    font-family:inherit;font-size:.82rem;transition:border-color .2s ease,background .2s ease;
+  }
+  .ref-context-menu .rcm-action:hover{border-color:var(--gold-2);background:rgba(255,255,255,0.06);}
+
+  /* ---------- mobile header: no burger toggle, just the button, right-aligned ---------- */
+  .mobile-back-btn{display:none;}
+  @media(max-width:1080px){
+    header{display:none !important;}
+    .dash-shell{padding-top:16px;}
+    .mobile-back-btn{
+      display:flex;align-items:center;justify-content:center;
+      position:fixed;top:16px;left:16px;z-index:60;
+      width:38px;height:38px;border-radius:50%;
+      background:rgba(10,46,23,0.85);border:1px solid var(--line);
+      color:var(--gold-2);font-size:.9rem;backdrop-filter:blur(6px);
+    }
+    #connectPanel h1{font-size:1.3rem;}
+    #connectPanel p{font-size:.85rem;}
+  }
+
+  @media(max-width:760px){
+    .dash-shell{padding-left:6vw;padding-right:6vw;}
+    .dash-stats{grid-template-columns:1fr 1fr;}
+    #connectPanel{padding:28px 24px;}
+  }
+  @media(max-width:480px){
+    .stat-card{padding:18px 14px;}
+    .stat-card .val{font-size:1.35rem;}
+    .stat-card .lab{font-size:.7rem;}
+    .rewards-card{padding:24px 20px;}
+    .ref-card{padding:24px 20px;}
+    .share-row{justify-content:center;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-fixed"></div>
+<canvas id="particles"></canvas>
+<div class="grid-overlay"></div>
+
+<a href="index.html" class="mobile-back-btn" aria-label="Back"><i class="fa-solid fa-arrow-left"></i></a>
+
+<header id="siteHeader">
+  <a href="index.html" class="logo">
+    <img src="assets/nexgrow.png" alt="Nexgrow" class="logo-img">
+  </a>
+  <nav class="links">
+    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="index.html#about"><i class="fa-solid fa-circle-info"></i> About</a>
+    <a href="index.html#faq"><i class="fa-solid fa-circle-question"></i> FAQ</a>
+  </nav>
+  <a href="index.html" class="nav-cta"><i class="fa-solid fa-house"></i> Back Home</a>
+  <a href="admin.html" class="nav-cta" id="adminPanelLink" style="display:none;"><i class="fa-solid fa-shield-halved"></i> Admin Panel</a>
+  <button class="burger" id="burger"><i class="fa-solid fa-bars"></i></button>
+</header>
+
+<main class="dash-shell">
+
+  <!-- CONNECT PROMPT -->
+  <div id="connectPanel" class="reveal in">
+    <img src="assets/nexgrow.png" alt="Nexgrow" style="height:34px;width:auto;margin-bottom:26px;">
+    <div class="connect-icon"><i class="fa-solid fa-wallet"></i></div>
+    <h1>Connect your wallet</h1>
+    <p>Connect any decentralized wallet that supports the Bitcoin blockchain, accept the risk disclosure, and unlock your personal referral dashboard.</p>
+    <button class="btn-primary wallet-btn" id="connectBtn" style="width:100%;justify-content:center;">
+      <i class="fa-solid fa-plug"></i> Connect Wallet
+    </button>
+    <div class="connect-steps">
+      <div><i class="fa-solid fa-circle-check"></i> Connect with MetaMask or any injected wallet</div>
+      <div><i class="fa-solid fa-circle-check"></i> Read &amp; accept the risk disclosure</div>
+      <div><i class="fa-solid fa-circle-check"></i> Get your unique unlimited-use referral link</div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboard">
+    <div class="dash-head">
+      <div>
+        <div class="eyebrow" style="margin-bottom:14px;"><i class="fa-solid fa-circle-check"></i> Verified Member</div>
+        <h2 style="font-size:clamp(1.5rem,3vw,2.1rem);">Your Nexgrow Dashboard</h2>
+      </div>
+      <div class="dash-addr" id="dashAddr"><i class="fa-solid fa-wallet"></i> 0x0000...0000</div>
+    </div>
+
+    <p style="color:var(--text-dim);font-size:.92rem;font-weight:300;line-height:1.7;margin:-18px 0 26px;max-width:680px;">Here's a snapshot of your account: how many people you've referred, tokens earned so far, rewards unlocked, and your current membership status &mdash; plus your progress toward the next reward below.</p>
+
+    <div class="dash-stats">
+      <div class="stat-card"><i class="fa-solid fa-users"></i><div class="val" id="statReferrals">0</div><div class="lab">Total Referrals</div></div>
+      <div class="stat-card"><i class="fa-solid fa-coins"></i><div class="val" id="statTokens">0</div><div class="lab">Tokens Earned</div></div>
+      <div class="stat-card"><i class="fa-solid fa-trophy"></i><div class="val" id="statRewardsEarned">0</div><div class="lab">Rewards Earned</div></div>
+      <div class="stat-card"><i class="fa-solid fa-shield-halved"></i><div class="val">Active</div><div class="lab">Membership Status</div></div>
+    </div>
+
+    <div class="rewards-card">
+      <div class="rewards-head">
+        <h3><i class="fa-solid fa-gift"></i> Your Rewards</h3>
+        <div class="rewards-count"><span class="num" id="rewardsUnlockedNum">0</span><span class="lab">Unlocked</span></div>
+      </div>
+      <p class="rewards-detail" id="rewardsDetailText">Loading your reward status&hellip;</p>
+      <div class="rewards-bar-track"><div class="rewards-bar-fill" id="rewardsBarFill"></div></div>
+      <div class="rewards-bar-lab">
+        <span>Progress to next reward</span>
+        <span id="rewardsBarLabel"><b>0</b> / <b>10</b> referrals</span>
+      </div>
+    </div>
+
+    <div class="ref-card" id="refCard">
+      <h3><i class="fa-solid fa-link"></i> Your Referral Link</h3>
+      <p class="hint">Share this unique link &mdash; referrals are unlimited until the window closes one day before launch.</p>
+      <p class="hint" id="rewardProgress" style="margin-top:-10px;color:var(--gold-2);font-weight:500;"></p>
+      <p class="hint" style="margin-top:-6px;font-size:.78rem;"><i class="fa-solid fa-computer-mouse"></i> Right-click anywhere on this card to check your referral points.</p>
+      <div class="ref-link-row">
+        <input type="text" class="ref-link-input" id="refLinkInput" readonly>
+        <button class="copy-btn" id="copyRefBtn" title="Copy Link" aria-label="Copy Link"><i class="fa-solid fa-copy"></i></button>
+      </div>
+      <div class="share-row">
+        <button class="share-btn tg" id="shareTelegram"><i class="fa-brands fa-telegram"></i> Telegram</button>
+        <button class="share-btn wa" id="shareWhatsapp"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="ref-context-menu" id="refContextMenu">
+    <div class="rcm-title"><i class="fa-solid fa-coins"></i> Referral Points</div>
+    <div class="rcm-msg" id="rcmMessage">Loading your referral point status&hellip;</div>
+    <button class="rcm-action" id="rcmCopyBtn"><i class="fa-solid fa-copy"></i> Copy Referral Link</button>
+  </div>
+
+</main>
+
+<footer>
+  <div class="foot-bottom" style="border-top:none;padding-top:0;">
+    <span>&copy; 2026 Nexgrow. All rights reserved.</span>
+    <span><a href="disclosure.html" style="color:var(--text-dim);">Risk Disclosure</a> &middot; Built on BEP-20</span>
+  </div>
+</footer>
+
+<div id="walletToast"></div>
+
+<div class="modal-overlay" id="disclosureOverlay">
+  <div class="disclosure-card">
+    <div class="disclosure-head"><i class="fa-solid fa-triangle-exclamation"></i><h2>Risk Disclosure &amp; No-Guarantee Policy</h2></div>
+    <div class="disclosure-sub">Please read this in full before your referral dashboard unlocks.</div>
+
+    <div class="disclosure-body">
+      <p><b>Important Notice:</b> Cryptocurrency and digital assets involve significant financial, market, technology, security, and regulatory risks. The value of a Token may rise or fall rapidly, and users may lose some or all of their funds.</p>
+
+      <h3>1. No Guarantee of Profit</h3>
+      <p>The Project does not guarantee any profit, income, return, ROI, APY, bonus, reward, referral income, or increase in Token value.</p>
+
+      <h3>2. Market Risk</h3>
+      <p>Token prices can be highly volatile and may decrease significantly or become worthless. Past performance or projected results do not guarantee future performance.</p>
+
+      <h3>3. No Guarantee of Liquidity</h3>
+      <p>There is no guarantee that the Token will always have buyers, sellers, trading volume, liquidity, or exchange listing.</p>
+
+      <h3>4. Technology &amp; Security Risk</h3>
+      <p>Blockchain, smart contracts, wallets and digital platforms may be affected by bugs, hacking, cyberattacks, network failures, technical issues or other unexpected events.</p>
+
+      <h3>5. User Responsibility</h3>
+      <p>Users are responsible for protecting their wallets, private keys, passwords and other credentials. Transactions may be irreversible, and incorrect transfers may result in permanent loss.</p>
+
+      <h3>6. Regulatory &amp; Tax Risk</h3>
+      <p>Cryptocurrency laws, regulations and tax rules vary by country and may change. Users are responsible for complying with the laws and tax obligations applicable to them.</p>
+
+      <h3>7. No Financial Advice</h3>
+      <p>Information provided by the Project is for general informational purposes only and does not constitute financial, investment, legal or tax advice.</p>
+
+      <h3>8. No Guaranteed Income</h3>
+      <p>No promoter, representative, affiliate or community member is authorized to promise guaranteed income, fixed returns, risk-free profit or guaranteed Token appreciation.</p>
+
+      <h3>9. Invest Responsibly</h3>
+      <p>Users should conduct their own research and seek independent professional advice where appropriate. Never commit more money than you can afford to lose.</p>
+
+      <div class="disclosure-final">
+        <p>FINAL WARNING: Crypto assets are high-risk. There is no guarantee of profit or income. You may lose some or all of your funds.</p>
+        <p style="font-weight:300;margin-top:8px;color:var(--text-dim);">By participating in the Project, you acknowledge and accept these risks, and confirm you are at least 18 years of age (or the legal age of majority in your jurisdiction) with full legal authority to enter into a binding agreement.</p>
+      </div>
+    </div>
+
+    <label class="disclosure-agree" for="disclosureCheck">
+      <input type="checkbox" id="disclosureCheck">
+      <span>I have read and understood the Risk Disclosure &amp; No-Guarantee Policy, and I agree to proceed.</span>
+    </label>
+
+    <div class="disclosure-actions">
+      <button class="btn-primary" id="disclosureAgreeBtn" disabled>Agree &amp; Continue <i class="fa-solid fa-check"></i></button>
+    </div>
+  </div>
+</div>
+
+<script src="assets/main.js"></script>
+<script>
+  // ---------- Wallet Connect (EIP-1193: MetaMask / any injected wallet) ----------
+  let currentAccount = null;
+
+  const ADMIN_WALLET = "0x0c25A1aF48B6789781766c3Cb98BD4d2eFc6ec32";
+
+  function showToast(msg, isError){
+    const t = document.getElementById('walletToast');
+    t.innerHTML = `<i class="fa-solid ${isError ? 'fa-circle-exclamation' : 'fa-circle-check'}"></i><span>${msg}</span>`;
+    t.style.borderColor = isError ? 'rgba(255,90,90,0.5)' : 'var(--line)';
+    t.classList.add('show');
+    clearTimeout(showToast._h);
+    showToast._h = setTimeout(()=>t.classList.remove('show'), 4500);
+  }
+
+  function shortAddr(addr){ return addr.slice(0,6) + '...' + addr.slice(-4); }
+
+  function setConnectButtonState(state, label, iconClass){
+    const btn = document.getElementById('connectBtn');
+    btn.classList.remove('connected','connecting');
+    if(state) btn.classList.add(state);
+    btn.innerHTML = `<i class="fa-solid ${iconClass}"></i> ${label}`;
+  }
+
+  async function connectWallet(){
+    if(typeof window.ethereum === 'undefined'){
+      showToast('No wallet found. Install MetaMask or another BTC/EVM-compatible wallet extension.', true);
+      window.open('https://metamask.io/download/', '_blank');
+      return;
+    }
+    try{
+      setConnectButtonState('connecting', 'Connecting...', 'fa-spinner fa-spin');
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      handleAccounts(accounts);
+    }catch(err){
+      console.error(err);
+      setConnectButtonState(null, 'Connect Wallet', 'fa-plug');
+      if(err.code === 4001){
+        showToast('Connection request rejected.', true);
+      }else{
+        showToast('Could not connect wallet. Please try again.', true);
+      }
+    }
+  }
+
+  function handleAccounts(accounts){
+    const adminLink = document.getElementById('adminPanelLink');
+
+    if(!accounts || accounts.length === 0){
+      currentAccount = null;
+      setConnectButtonState(null, 'Connect Wallet', 'fa-plug');
+      hideDashboard();
+      if(adminLink) adminLink.style.display = 'none';
+      return;
+    }
+
+    currentAccount = accounts[0];
+    const isAdmin = currentAccount.toLowerCase() === ADMIN_WALLET.toLowerCase();
+
+    // ---- Admin account: reveal Admin Panel link, redirect there from dashboard ----
+    if(isAdmin){
+      if(adminLink) adminLink.style.display = 'inline-flex';
+      if(!window.location.pathname.endsWith('/admin.html')){
+        window.location.href = 'admin.html';
+        return;
+      }
+      return;
+    }
+
+    // ---- Normal user ----
+    if(adminLink) adminLink.style.display = 'none';
+    if(window.location.pathname.endsWith('/admin.html')){
+      window.location.href = 'dashboard.html';
+      return;
+    }
+
+    setConnectButtonState('connected', shortAddr(currentAccount), 'fa-circle-check');
+    showToast('Wallet connected: ' + shortAddr(currentAccount));
+    onWalletVerifiedGate(currentAccount);
+  }
+
+  // ---------- Risk Disclosure Agreement (gates the dashboard for new users) ----------
+  // Referral reward rule: one reward unlocked every 10 referrals (10, 20, 30, 40...).
+  const REFERRALS_PER_REWARD = 10;
+  function nextRewardTier(totalReferrals){
+    return (Math.floor(totalReferrals / REFERRALS_PER_REWARD) + 1) * REFERRALS_PER_REWARD;
+  }
+
+  let disclosureAddress = null;
+
+  function onWalletVerifiedGate(address){
+    if(localStorage.getItem('nexadon_verified_' + address.toLowerCase())){
+      showDashboard(address);
+    }else{
+      launchDisclosure(address);
+    }
+  }
+
+  function launchDisclosure(address){
+    disclosureAddress = address;
+    const check = document.getElementById('disclosureCheck');
+    const agreeBtn = document.getElementById('disclosureAgreeBtn');
+    check.checked = false;
+    agreeBtn.disabled = true;
+    document.querySelector('.disclosure-body').scrollTop = 0;
+    document.getElementById('disclosureOverlay').classList.add('show');
+  }
+
+  document.getElementById('disclosureCheck').addEventListener('change', (e)=>{
+    document.getElementById('disclosureAgreeBtn').disabled = !e.target.checked;
+  });
+
+  document.getElementById('disclosureAgreeBtn').addEventListener('click', agreeToDisclosure);
+
+  async function agreeToDisclosure(){
+    if(!document.getElementById('disclosureCheck').checked) return;
+    const agreeBtn = document.getElementById('disclosureAgreeBtn');
+    agreeBtn.disabled = true;
+    agreeBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Please wait...';
+
+    // Unlock the dashboard immediately — this never blocks on the backend call.
+    localStorage.setItem('nexadon_verified_' + disclosureAddress.toLowerCase(), '1');
+    document.getElementById('disclosureOverlay').classList.remove('show');
+    showToast('Risk disclosure accepted! Your dashboard is ready.');
+    await showDashboard(disclosureAddress);
+
+    agreeBtn.disabled = !document.getElementById('disclosureCheck').checked;
+    agreeBtn.innerHTML = 'Agree &amp; Continue <i class="fa-solid fa-check"></i>';
+
+    // Log the agreement in the background. If this fails (e.g. server/DB not
+    // reachable), it will not stop the user from using the dashboard.
+    try{
+      const response = await fetch('assets/trade111-api/quiz-progress.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          wallet_address: disclosureAddress,
+          total_questions: 1,
+          completed_questions: 1,
+          correct_answers: 1,
+          is_completed: true
+        })
+      });
+      if(!response.ok) throw new Error('Disclosure API returned HTTP ' + response.status);
+      const data = await response.json();
+      if(!data.success) throw new Error(data.message || 'Could not save agreement.');
+    }catch(error){
+      console.error('Disclosure save error (non-blocking):', error);
+    }
+  }
+
+  // ---------- Dashboard & Referral Link ----------
+  function getReferralCode(address){
+    let code = localStorage.getItem('trade111_refcode_' + address.toLowerCase());
+    if(!code){
+      code = 'NX' + address.slice(2,8).toUpperCase() + Math.floor(Math.random()*90+10);
+      localStorage.setItem('trade111_refcode_' + address.toLowerCase(), code);
+    }
+    localStorage.setItem('trade111_ref_owner_' + code, address);
+    return code;
+  }
+
+  // ---------- Save user in database ----------
+  async function registerUserInDatabase(address, referralCode){
+    try{
+      const pendingReferral = localStorage.getItem('trade111_pending_ref') || '';
+      const response = await fetch('assets/trade111-api/users.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          wallet_address: address,
+          referral_code: referralCode,
+          referred_by: pendingReferral
+        })
+      });
+      const data = await response.json();
+      return data.success === true;
+    }catch(error){
+      console.error('Could not register user:', error);
+      return false;
+    }
+  }
+
+  // ---------- Referral registration ----------
+  async function registerReferral(childAddress){
+    const referralCode = localStorage.getItem('trade111_pending_ref');
+    if(!referralCode) return;
+
+    try{
+      const response = await fetch('assets/trade111-api/referral.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ child_address: childAddress, referral_code: referralCode })
+      });
+      const data = await response.json();
+
+      if(data.success){
+        localStorage.removeItem('trade111_pending_ref');
+        if(!data.duplicate){
+          // Referral point message — shown once, right after a fresh referral is recorded.
+          showToast('Referral counted! Your referrer just earned a point toward their reward tier.');
+        }
+      }else{
+        console.error('Referral registration failed:', data.message);
+      }
+    }catch(error){
+      console.error('Referral API error:', error);
+    }
+  }
+
+  // ---------- Reward tier progress ----------
+  let lastKnownReferrals = 0;
+  let lastKnownTokens = 0;
+
+  function getRecurringRewardConfig(){
+    let saved = null;
+    try{
+      saved = JSON.parse(localStorage.getItem('nexadon_recurring_reward'));
+    }catch(e){ saved = null; }
+    if(saved && saved.target > 0){
+      return {
+        target: Number(saved.target),
+        tokenName: saved.tokenName || 'Tokens',
+        tokenAmount: Number(saved.tokenAmount) || 0
+      };
+    }
+    return { target: REFERRALS_PER_REWARD, tokenName: 'Tokens', tokenAmount: 0 };
+  }
+
+  function renderRewardProgress(totalReferrals){
+    const el = document.getElementById('rewardProgress');
+    if(!el) return;
+    const cfg = getRecurringRewardConfig();
+    const next = (Math.floor(totalReferrals / cfg.target) + 1) * cfg.target;
+    const remaining = next - totalReferrals;
+    el.innerHTML = `<i class="fa-solid fa-flag-checkered"></i> ${remaining} more referral${remaining===1?'':'s'} to unlock your next reward (every ${cfg.target} referrals).`;
+  }
+
+  function renderRewardsBox(totalReferrals){
+    const cfg = getRecurringRewardConfig();
+    const rewardsEarned = Math.floor(totalReferrals / cfg.target);
+    const currentProgress = totalReferrals % cfg.target;
+    const pct = Math.min(100, Math.round((currentProgress / cfg.target) * 100));
+
+    const earnedEl = document.getElementById('statRewardsEarned');
+    if(earnedEl) earnedEl.textContent = rewardsEarned;
+
+    const unlockedNumEl = document.getElementById('rewardsUnlockedNum');
+    if(unlockedNumEl) unlockedNumEl.textContent = rewardsEarned;
+
+    const detailEl = document.getElementById('rewardsDetailText');
+    if(detailEl){
+      if(rewardsEarned > 0 && cfg.tokenAmount > 0){
+        const totalRewardTokens = rewardsEarned * cfg.tokenAmount;
+        detailEl.innerHTML = `You've unlocked <b>${rewardsEarned}</b> reward${rewardsEarned===1?'':'s'} &mdash; <b>${totalRewardTokens} ${escapeHtmlDash(cfg.tokenName)}</b> total, earned every <b>${cfg.target}</b> referrals.`;
+      }else{
+        detailEl.innerHTML = `Refer <b>${cfg.target}</b> people to unlock your first reward. Rewards repeat every <b>${cfg.target}</b> referrals.`;
+      }
+    }
+
+    const barFill = document.getElementById('rewardsBarFill');
+    if(barFill) barFill.style.width = pct + '%';
+
+    const barLabel = document.getElementById('rewardsBarLabel');
+    if(barLabel) barLabel.innerHTML = `<b>${currentProgress}</b> / <b>${cfg.target}</b> referrals`;
+  }
+
+  function escapeHtmlDash(str){
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function referralPointMessage(totalReferrals, totalTokens){
+    const cfg = getRecurringRewardConfig();
+    const next = (Math.floor(totalReferrals / cfg.target) + 1) * cfg.target;
+    const remaining = next - totalReferrals;
+    return `You have <b>${totalReferrals}</b> referral point${totalReferrals===1?'':'s'} and <b>${totalTokens}</b> tokens earned. <b>${remaining}</b> more to reach your next reward at <b>${next}</b> referrals.`;
+  }
+
+  // ---------- Referral count / tokens from database ----------
+  async function updateReferralCount(address){
+    try{
+      const response = await fetch('assets/trade111-api/user-stats.php?wallet=' + encodeURIComponent(address));
+      const data = await response.json();
+      if(!data.success) return;
+
+      lastKnownReferrals = data.total_referrals;
+      lastKnownTokens = data.total_tokens;
+
+      const referralElement = document.getElementById('statReferrals');
+      if(referralElement) referralElement.textContent = data.total_referrals;
+
+      const tokenElement = document.getElementById('statTokens');
+      if(tokenElement) tokenElement.textContent = data.total_tokens;
+
+      renderRewardProgress(data.total_referrals);
+      renderRewardsBox(data.total_referrals);
+    }catch(error){
+      console.error('Could not load user stats:', error);
+    }
+  }
+
+  // ---------- Right-click referral point menu ----------
+  // Once verified and on the dashboard, right-clicking the referral card
+  // shows the referral point message instead of the browser's default context menu.
+  const refCard = document.getElementById('refCard');
+  const refContextMenu = document.getElementById('refContextMenu');
+  const rcmMessage = document.getElementById('rcmMessage');
+
+  if(refCard && refContextMenu){
+    refCard.addEventListener('contextmenu', (e)=>{
+      e.preventDefault();
+      rcmMessage.innerHTML = referralPointMessage(lastKnownReferrals, lastKnownTokens);
+
+      const menuWidth = 260, menuHeight = 140;
+      let x = e.clientX, y = e.clientY;
+      if(x + menuWidth > window.innerWidth) x = window.innerWidth - menuWidth - 12;
+      if(y + menuHeight > window.innerHeight) y = window.innerHeight - menuHeight - 12;
+
+      refContextMenu.style.left = x + 'px';
+      refContextMenu.style.top = y + 'px';
+      refContextMenu.classList.add('show');
+    });
+
+    document.addEventListener('click', (e)=>{
+      if(!refContextMenu.contains(e.target)){
+        refContextMenu.classList.remove('show');
+      }
+    });
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape') refContextMenu.classList.remove('show');
+    });
+    window.addEventListener('scroll', ()=>refContextMenu.classList.remove('show'));
+  }
+
+  const rcmCopyBtn = document.getElementById('rcmCopyBtn');
+  if(rcmCopyBtn){
+    rcmCopyBtn.addEventListener('click', ()=>{
+      const input = document.getElementById('refLinkInput');
+      navigator.clipboard.writeText(input.value).then(()=>{
+        showToast('Referral link copied to clipboard!');
+      }).catch(()=>{
+        showToast('Could not copy automatically — please copy manually.', true);
+      });
+      refContextMenu.classList.remove('show');
+    });
+  }
+
+  // ---------- Show dashboard ----------
+  async function showDashboard(address){
+    const code = getReferralCode(address);
+    const link = `${window.location.origin}${window.location.pathname.replace('dashboard.html','index.html')}?ref=${code}`;
+
+    document.getElementById('dashAddr').innerHTML = `<i class="fa-solid fa-wallet"></i> ${shortAddr(address)}`;
+    document.getElementById('refLinkInput').value = link;
+    document.getElementById('connectPanel').style.display = 'none';
+    document.getElementById('dashboard').classList.add('show');
+
+    await registerUserInDatabase(address, code);
+    await registerReferral(address);
+    await updateReferralCount(address);
+  }
+
+  function hideDashboard(){
+    document.getElementById('dashboard').classList.remove('show');
+    document.getElementById('connectPanel').style.display = 'block';
+  }
+
+  document.getElementById('connectBtn').addEventListener('click', connectWallet);
+
+  document.getElementById('copyRefBtn').addEventListener('click', ()=>{
+    const input = document.getElementById('refLinkInput');
+    input.select();
+    navigator.clipboard.writeText(input.value).then(()=>{
+      showToast('Referral link copied to clipboard!');
+    }).catch(()=>{
+      showToast('Could not copy automatically — please copy manually.', true);
+    });
+  });
+
+  document.getElementById('shareTelegram').addEventListener('click', ()=>{
+    const link = document.getElementById('refLinkInput').value;
+    window.open('https://t.me/share/url?url=' + encodeURIComponent(link) + '&text=' + encodeURIComponent('Join Nexgrow with my referral link:'), '_blank');
+  });
+  document.getElementById('shareWhatsapp').addEventListener('click', ()=>{
+    const link = document.getElementById('refLinkInput').value;
+    window.open('https://wa.me/?text=' + encodeURIComponent('Join Nexgrow with my referral link: ' + link), '_blank');
+  });
+
+  if(typeof window.ethereum !== 'undefined'){
+    // Restore connection state without prompting, if already authorized
+    window.ethereum.request({ method: 'eth_accounts' }).then(handleAccounts).catch(()=>{});
+    window.ethereum.on && window.ethereum.on('accountsChanged', handleAccounts);
+    window.ethereum.on && window.ethereum.on('chainChanged', ()=>window.location.reload());
+  }
+</script>
+</body>
+</html>
