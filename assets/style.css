@@ -159,6 +159,10 @@ section {
   color: var(--gold-2);
 }
 
+section {
+  position: relative;
+}
+
 .section-head {
   max-width: 780px;
   margin: 0 auto 58px;
@@ -1920,5 +1924,94 @@ footer {
     left: -32px;
     width: 20px;
     height: 20px;
+  }
+}
+
+/* ================================================================
+   15. FLOATING NFT & BEP-20 COINS (FROM ECOSYSTEM ONWARDS)
+   ================================================================ */
+.bg-floating-coin {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.75)) drop-shadow(0 0 16px rgba(242, 199, 92, 0.25));
+  will-change: transform;
+}
+
+.coin-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes coinFloatA {
+  0%, 100% {
+    transform: perspective(800px) translateY(0px) rotateY(0deg) rotateX(0deg) rotateZ(0deg);
+  }
+  25% {
+    transform: perspective(800px) translateY(-14px) rotateY(10deg) rotateX(6deg) rotateZ(3deg);
+  }
+  50% {
+    transform: perspective(800px) translateY(-6px) rotateY(0deg) rotateX(-4deg) rotateZ(-2deg);
+  }
+  75% {
+    transform: perspective(800px) translateY(-18px) rotateY(-12deg) rotateX(4deg) rotateZ(4deg);
+  }
+}
+
+@keyframes coinFloatB {
+  0%, 100% {
+    transform: perspective(800px) translateY(0px) rotateY(0deg) rotateX(0deg) rotateZ(0deg);
+  }
+  30% {
+    transform: perspective(800px) translateY(-18px) rotateY(-14deg) rotateX(-6deg) rotateZ(-4deg);
+  }
+  60% {
+    transform: perspective(800px) translateY(-8px) rotateY(6deg) rotateX(8deg) rotateZ(2deg);
+  }
+  85% {
+    transform: perspective(800px) translateY(-22px) rotateY(12deg) rotateX(-5deg) rotateZ(-3deg);
+  }
+}
+
+.coin-float-1 {
+  animation: coinFloatA 8.5s ease-in-out infinite;
+}
+
+.coin-float-2 {
+  animation: coinFloatB 10.5s ease-in-out infinite 1.2s;
+}
+
+.coin-float-3 {
+  animation: coinFloatA 9.5s ease-in-out infinite 2.5s;
+}
+
+.coin-float-4 {
+  animation: coinFloatB 11.5s ease-in-out infinite 0.7s;
+}
+
+/* Sizes & Depth of Field */
+.coin-size-lg {
+  width: clamp(72px, 6vw, 90px);
+  height: clamp(72px, 6vw, 90px);
+  opacity: 0.88;
+}
+
+.coin-size-md {
+  width: clamp(58px, 4.8vw, 74px);
+  height: clamp(58px, 4.8vw, 74px);
+  opacity: 0.75;
+}
+
+.coin-size-sm {
+  width: clamp(46px, 3.8vw, 60px);
+  height: clamp(46px, 3.8vw, 60px);
+  opacity: 0.62;
+}
+
+@media (max-width: 768px) {
+  .bg-floating-coin {
+    opacity: 0.45 !important;
+    transform: scale(0.75);
   }
 }

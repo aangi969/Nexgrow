@@ -14,6 +14,76 @@
 </head>
 <body>
 
+<!-- Reusable Vector Coin Definitions (BEP-20 & NFT Medallions matching brand deck) -->
+<svg style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
+  <defs>
+    <!-- Outer Gold Rim Gradient -->
+    <radialGradient id="cGoldRim" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#FFF8D6"/>
+      <stop offset="30%" stop-color="#F2C75C"/>
+      <stop offset="70%" stop-color="#CF9B37"/>
+      <stop offset="100%" stop-color="#4E3406"/>
+    </radialGradient>
+    <!-- Inner Emerald Face Gradient (Matching official Nexgrow token coin) -->
+    <radialGradient id="cEmeraldFace" cx="40%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#0f4625"/>
+      <stop offset="50%" stop-color="#072b15"/>
+      <stop offset="85%" stop-color="#03160a"/>
+      <stop offset="100%" stop-color="#010a04"/>
+    </radialGradient>
+    <!-- Metallic Gold Bevel Highlight -->
+    <linearGradient id="cGoldBevel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF8D6" stop-opacity="0.9"/>
+      <stop offset="50%" stop-color="#F2C75C" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#7B5614" stop-opacity="0.8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- BEP-20 Official Medallion -->
+  <symbol id="coin-bep20" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="47" fill="url(#cGoldRim)" stroke="#FFE89E" stroke-width="1.2"/>
+    <circle cx="50" cy="50" r="44.5" fill="none" stroke="#7B5614" stroke-width="0.8" stroke-dasharray="2 1.5"/>
+    <circle cx="50" cy="50" r="42" fill="none" stroke="url(#cGoldBevel)" stroke-width="1.4"/>
+    <circle cx="50" cy="50" r="40" fill="url(#cEmeraldFace)"/>
+    <circle cx="50" cy="50" r="37.5" fill="none" stroke="#F2C75C" stroke-width="0.6" stroke-opacity="0.5"/>
+    <g opacity="0.18" stroke="#00ff77" stroke-width="0.5">
+      <line x1="50" y1="12" x2="50" y2="88"/>
+      <line x1="12" y1="50" x2="88" y2="50"/>
+      <line x1="23" y1="23" x2="77" y2="77"/>
+      <line x1="23" y1="77" x2="77" y2="23"/>
+    </g>
+    <!-- Center "N" Emblem (Matching Brand Graphic) -->
+    <path d="M38 31 H44 L56 57 V31 H62 V69 H56 L44 43 V69 H38 Z" fill="#ffffff" filter="drop-shadow(0 1px 3px rgba(0,0,0,0.8))"/>
+    <circle cx="50" cy="50" r="4.5" fill="url(#cGoldRim)" stroke="#FFF8D6" stroke-width="0.6"/>
+    <!-- "BEP-20" Inscription -->
+    <text x="50" y="80" text-anchor="middle" fill="#F2C75C" font-family="'Poppins', sans-serif" font-size="7" font-weight="800" letter-spacing="0.16em">BEP-20</text>
+  </symbol>
+
+  <!-- NFT Official Medallion -->
+  <symbol id="coin-nft" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="47" fill="url(#cGoldRim)" stroke="#FFE89E" stroke-width="1.2"/>
+    <circle cx="50" cy="50" r="44.5" fill="none" stroke="#7B5614" stroke-width="0.8" stroke-dasharray="2 1.5"/>
+    <circle cx="50" cy="50" r="42" fill="none" stroke="url(#cGoldBevel)" stroke-width="1.4"/>
+    <circle cx="50" cy="50" r="40" fill="url(#cEmeraldFace)"/>
+    <circle cx="50" cy="50" r="37.5" fill="none" stroke="#F2C75C" stroke-width="0.6" stroke-opacity="0.5"/>
+    <g opacity="0.18" stroke="#00ff77" stroke-width="0.5">
+      <line x1="50" y1="12" x2="50" y2="88"/>
+      <line x1="12" y1="50" x2="88" y2="50"/>
+      <line x1="23" y1="23" x2="77" y2="77"/>
+      <line x1="23" y1="77" x2="77" y2="23"/>
+    </g>
+    <!-- 3D Isometric NFT Cube Emblem -->
+    <g transform="translate(50, 46) scale(0.95)">
+      <polygon points="0,-15 13,-7.5 0,0 -13,-7.5" fill="#FFF8D6" stroke="#CF9B37" stroke-width="0.8"/>
+      <polygon points="-13,-7.5 0,0 0,15 -13,7.5" fill="#F2C75C" stroke="#7B5614" stroke-width="0.8"/>
+      <polygon points="0,0 13,-7.5 13,7.5 0,15" fill="#CF9B37" stroke="#4E3406" stroke-width="0.8"/>
+      <circle cx="0" cy="0" r="2.5" fill="#00ff77" opacity="0.85"/>
+    </g>
+    <!-- "NFT" Inscription -->
+    <text x="50" y="79" text-anchor="middle" fill="#F2C75C" font-family="'Poppins', sans-serif" font-size="7.5" font-weight="800" letter-spacing="0.18em">NFT</text>
+  </symbol>
+</svg>
+
 <!-- Simple, Cool, Aesthetic Ambient Canvas -->
 <div class="bg-canvas">
   <div class="ambient-glow glow-top"></div>
@@ -54,6 +124,12 @@
 
 <!-- BUILT FOR REAL DIGITAL UTILITY -->
 <section id="ecosystem">
+  <div class="bg-floating-coin coin-float-1 coin-size-lg" style="top: 40px; right: 3%;" aria-hidden="true">
+    <svg class="coin-svg" viewBox="0 0 100 100"><use href="#coin-bep20"/></svg>
+  </div>
+  <div class="bg-floating-coin coin-float-2 coin-size-md" style="bottom: 30px; left: 2%;" aria-hidden="true">
+    <svg class="coin-svg" viewBox="0 0 100 100"><use href="#coin-nft"/></svg>
+  </div>
   <div class="section-head reveal">
     <div class="eyebrow"><i class="fa-solid fa-bolt"></i> Real Digital Utility</div>
     <h2>Built for Real Digital Utility</h2>
@@ -85,6 +161,12 @@
 
 <!-- WHY Nexgrow -->
 <section id="why">
+  <div class="bg-floating-coin coin-float-3 coin-size-md" style="top: 50px; left: 2.5%;" aria-hidden="true">
+    <svg class="coin-svg" viewBox="0 0 100 100"><use href="#coin-nft"/></svg>
+  </div>
+  <div class="bg-floating-coin coin-float-4 coin-size-sm" style="bottom: 40px; right: 2.5%;" aria-hidden="true">
+    <svg class="coin-svg" viewBox="0 0 100 100"><use href="#coin-bep20"/></svg>
+  </div>
   <div class="section-head reveal">
     <div class="eyebrow"><i class="fa-solid fa-circle-question"></i> Why Nexgrow?</div>
     <h2>One Token. Multiple Possibilities.</h2>
@@ -160,6 +242,12 @@
 
 <!-- THREE PILLARS OF THE ECOSYSTEM -->
 <section id="pillars">
+  <div class="bg-floating-coin coin-float-1 coin-size-lg" style="top: 70px; right: 2.5%;" aria-hidden="true">
+    <svg class="coin-svg" viewBox="0 0 100 100"><use href="#coin-bep20"/></svg>
+  </div>
+  <div class="bg-floating-coin coin-float-2 coin-size-md" style="bottom: 80px; left: 2%;" aria-hidden="true">
+    <svg class="coin-svg" viewBox="0 0 100 100"><use href="#coin-nft"/></svg>
+  </div>
   <div class="section-head reveal">
     <div class="eyebrow"><i class="fa-solid fa-earth-americas"></i> Three Pillars</div>
     <h2>Three Pillars of the Ecosystem</h2>
@@ -247,6 +335,12 @@
 
 <!-- Nexgrow TOKEN -->
 <section id="tokenomics">
+  <div class="bg-floating-coin coin-float-3 coin-size-lg" style="top: 80px; left: 2.5%;" aria-hidden="true">
+    <svg class="coin-svg" viewBox="0 0 100 100"><use href="#coin-nft"/></svg>
+  </div>
+  <div class="bg-floating-coin coin-float-4 coin-size-md" style="bottom: 70px; right: 2.5%;" aria-hidden="true">
+    <svg class="coin-svg" viewBox="0 0 100 100"><use href="#coin-bep20"/></svg>
+  </div>
   <div class="section-head reveal">
     <div class="eyebrow"><i class="fa-solid fa-rocket"></i> Nexgrow Token</div>
     <h2>A Structured Digital Asset for a Growing Ecosystem</h2>
@@ -300,6 +394,12 @@
 
 <!-- REAL UTILITY / REAL USE CASES -->
 <section id="usecases">
+  <div class="bg-floating-coin coin-float-1 coin-size-md" style="top: 50px; right: 2.5%;" aria-hidden="true">
+    <svg class="coin-svg" viewBox="0 0 100 100"><use href="#coin-bep20"/></svg>
+  </div>
+  <div class="bg-floating-coin coin-float-2 coin-size-sm" style="bottom: 40px; left: 2%;" aria-hidden="true">
+    <svg class="coin-svg" viewBox="0 0 100 100"><use href="#coin-nft"/></svg>
+  </div>
   <div class="section-head reveal">
     <div class="eyebrow"><i class="fa-solid fa-earth-americas"></i> Real Utility</div>
     <h2>Real Utility. Real Use Cases.</h2>
@@ -382,6 +482,12 @@
 
 <!-- BUSINESS PARTNER ECOSYSTEM -->
 <section id="partners">
+  <div class="bg-floating-coin coin-float-3 coin-size-md" style="top: 50px; left: 2%;" aria-hidden="true">
+    <svg class="coin-svg" viewBox="0 0 100 100"><use href="#coin-nft"/></svg>
+  </div>
+  <div class="bg-floating-coin coin-float-4 coin-size-lg" style="bottom: 40px; right: 2%;" aria-hidden="true">
+    <svg class="coin-svg" viewBox="0 0 100 100"><use href="#coin-bep20"/></svg>
+  </div>
   <div class="section-head reveal">
     <div class="eyebrow"><i class="fa-solid fa-handshake"></i> Business Partner Ecosystem</div>
     <h2>Build With Nexgrow</h2>
@@ -455,6 +561,12 @@
 
 <!-- THE Nexgrow JOURNEY -->
 <section id="journey">
+  <div class="bg-floating-coin coin-float-1 coin-size-md" style="top: 140px; right: 2.5%;" aria-hidden="true">
+    <svg class="coin-svg" viewBox="0 0 100 100"><use href="#coin-bep20"/></svg>
+  </div>
+  <div class="bg-floating-coin coin-float-2 coin-size-sm" style="bottom: 110px; left: 2%;" aria-hidden="true">
+    <svg class="coin-svg" viewBox="0 0 100 100"><use href="#coin-nft"/></svg>
+  </div>
   <div class="section-head reveal">
     <div class="eyebrow"><i class="fa-solid fa-map"></i> Roadmap</div>
     <h2>The Nexgrow Journey</h2>
@@ -553,6 +665,12 @@
 
 <!-- FINAL CTA -->
 <section class="final-cta" id="join">
+  <div class="bg-floating-coin coin-float-3 coin-size-lg" style="top: 80px; left: 4%;" aria-hidden="true">
+    <svg class="coin-svg" viewBox="0 0 100 100"><use href="#coin-nft"/></svg>
+  </div>
+  <div class="bg-floating-coin coin-float-4 coin-size-md" style="bottom: 70px; right: 4%;" aria-hidden="true">
+    <svg class="coin-svg" viewBox="0 0 100 100"><use href="#coin-bep20"/></svg>
+  </div>
   <div class="eyebrow reveal" style="margin-bottom:20px;"><i class="fa-solid fa-rocket"></i> The Future Is Utility</div>
   <h2 class="reveal">Play. Shop. Use. <span class="metal-gold shine">Reward.</span></h2>
   <p class="reveal">Nexgrow brings together blockchain technology, digital utilities, gaming, shopping, loyalty and business participation within one ecosystem.</p>
