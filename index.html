@@ -52,11 +52,20 @@
       <line x1="23" y1="23" x2="77" y2="77"/>
       <line x1="23" y1="77" x2="77" y2="23"/>
     </g>
-    <!-- Center "N" Emblem (Matching Brand Graphic) -->
-    <path d="M38 31 H44 L56 57 V31 H62 V69 H56 L44 43 V69 H38 Z" fill="#ffffff" filter="drop-shadow(0 1px 3px rgba(0,0,0,0.8))"/>
-    <circle cx="50" cy="50" r="4.5" fill="url(#cGoldRim)" stroke="#FFF8D6" stroke-width="0.6"/>
+    <!-- BEP-20 / BNB Chain Cryptographic Rhombus Insignia (Zero N letter) -->
+    <g transform="translate(50, 47)" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.85))">
+      <!-- Center Diamond -->
+      <polygon points="0,-9 9,0 0,9 -9,0" fill="url(#cGoldRim)" stroke="#FFE89E" stroke-width="0.9"/>
+      <polygon points="0,-4.5 4.5,0 0,4.5 -4.5,0" fill="url(#cEmeraldFace)" stroke="#F2C75C" stroke-width="0.5"/>
+      <circle cx="0" cy="0" r="1.8" fill="#00ff77"/>
+      <!-- 4 Outer Rhombus Wings -->
+      <polygon points="0,-19 5.5,-13.5 0,-8 -5.5,-13.5" fill="url(#cGoldRim)" stroke="#FFF8D6" stroke-width="0.7"/>
+      <polygon points="0,8 5.5,13.5 0,19 -5.5,13.5" fill="url(#cGoldRim)" stroke="#FFF8D6" stroke-width="0.7"/>
+      <polygon points="-8,0 -13.5,5.5 -19,0 -13.5,-5.5" fill="url(#cGoldRim)" stroke="#FFF8D6" stroke-width="0.7"/>
+      <polygon points="8,0 13.5,5.5 19,0 13.5,-5.5" fill="url(#cGoldRim)" stroke="#FFF8D6" stroke-width="0.7"/>
+    </g>
     <!-- "BEP-20" Inscription -->
-    <text x="50" y="80" text-anchor="middle" fill="#F2C75C" font-family="'Poppins', sans-serif" font-size="7" font-weight="800" letter-spacing="0.16em">BEP-20</text>
+    <text x="50" y="81" text-anchor="middle" fill="#F2C75C" font-family="'Poppins', sans-serif" font-size="7.5" font-weight="800" letter-spacing="0.18em">BEP-20</text>
   </symbol>
 
   <!-- NFT Official Medallion -->
@@ -87,9 +96,8 @@
 <!-- Top Scroll Progress -->
 <div id="progress-bar"></div>
 
-<!-- Cyber & Digital Earth Living Background (Nexadon Theme) -->
+<!-- Cyber & Constellation Living Background (Nexadon Theme - Earth & N Coin Removed) -->
 <div id="crypto-bg" aria-hidden="true">
-  <div class="crypto-earth-layer"></div>
   <div class="crypto-grid"></div>
   <div class="glow-orb glow-gold"></div>
   <div class="glow-orb glow-cyan"></div>
