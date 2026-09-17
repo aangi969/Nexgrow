@@ -75,43 +75,104 @@ body {
 
 
 /* ================================================================
-   1. SIMPLE, COOL, AESTHETIC MINIMALIST BACKGROUND
+   1. DIGITAL EARTH GLOBE & CYBER BACKGROUND (NEXADON THEME)
    ================================================================ */
-.bg-canvas {
+#crypto-bg {
   position: fixed;
-  inset: 0;
-  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   pointer-events: none;
-  background-color: #070b08;
-  background-image:
-    radial-gradient(circle 900px at 50% -120px, rgba(34, 197, 94, 0.12) 0%, transparent 65%),
-    radial-gradient(circle 700px at 85% 25%, rgba(242, 199, 92, 0.06) 0%, transparent 55%),
-    radial-gradient(circle 800px at 15% 65%, rgba(34, 197, 94, 0.07) 0%, transparent 60%),
-    radial-gradient(circle 750px at 50% 100%, rgba(16, 163, 74, 0.08) 0%, transparent 65%);
+  z-index: -1;
+  overflow: hidden;
+  background-color: #020805;
 }
 
-.ambient-glow {
+/* Photorealistic 3D Digital Earth Globe + Atmospheric Glow */
+.crypto-earth-layer {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(ellipse 75% 65% at 20% 75%, rgba(0, 255, 157, 0.12) 0%, transparent 65%),
+    linear-gradient(180deg, rgba(2, 10, 7, 0.65) 0%, rgba(1, 7, 5, 0.38) 40%, rgba(1, 6, 4, 0.78) 100%),
+    url('nexadon_bg_crypto.jpg');
+  background-position: center bottom;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.96;
+}
+
+/* Micro Isometric / Cyber Grid */
+.crypto-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 54px 54px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 25%, black 20%, transparent 82%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 25%, black 20%, transparent 82%);
+  opacity: 0.9;
+}
+
+/* Ambient Gold & Cyan Glow Orbs */
+.glow-orb {
   position: absolute;
   border-radius: 50%;
   pointer-events: none;
-  filter: blur(120px);
+  filter: blur(140px);
 }
 
-.glow-top {
-  top: -150px;
+.glow-gold {
+  top: -160px;
   left: 50%;
   transform: translateX(-50%);
-  width: min(850px, 92vw);
-  height: 460px;
-  background: radial-gradient(ellipse at center, rgba(34, 197, 94, 0.15) 0%, rgba(242, 199, 92, 0.08) 45%, transparent 70%);
+  width: 950px;
+  height: 560px;
+  background: radial-gradient(circle, rgba(242, 199, 92, 0.16) 0%, rgba(229, 184, 66, 0.06) 50%, transparent 70%);
+  animation: orbFloat 10s ease-in-out infinite alternate;
 }
 
-.glow-accent {
-  top: 45%;
-  right: 5%;
-  width: min(550px, 75vw);
-  height: 550px;
-  background: radial-gradient(circle at center, rgba(34, 197, 94, 0.07) 0%, transparent 65%);
+.glow-cyan {
+  bottom: -180px;
+  right: -120px;
+  width: 800px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(0, 255, 157, 0.08) 0%, rgba(0, 212, 255, 0.04) 50%, transparent 70%);
+  animation: orbFloat 14s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes orbFloat {
+  0% {
+    transform: translate(-50%, 0) scale(1);
+  }
+  100% {
+    transform: translate(-50%, 40px) scale(1.12);
+  }
+}
+
+#network-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+/* Top Scroll Progress */
+#progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, #F2C75C, #00FF9D, #FFF);
+  box-shadow: 0 0 12px #F2C75C;
+  z-index: 1000;
+  transition: width 0.1s linear;
 }
 
 /* ================================================================

@@ -273,12 +273,154 @@ function initHeroDots() {
   animId = requestAnimationFrame(render);
 }
 
+// 6. Top Scroll Progress Indicator
+function initProgressBar() {
+  const progressBar = document.getElementById('progress-bar');
+  if (!progressBar) return;
+
+  function updateProgress() {
+    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (totalHeight <= 0) {
+      progressBar.style.width = '0%';
+      return;
+    }
+    const progress = (window.scrollY / totalHeight) * 100;
+    progressBar.style.width = `${Math.min(Math.max(progress, 0), 100)}%`;
+  }
+
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+}
+
+// 7. Institutional Decentralized Network Canvas (Nexadon Theme)
+function initNetworkCanvas() {
+  const canvas = document.getElementById('network-canvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  let width = 0, height = 0;
+  let nodes = [];
+  const maxNodes = 65;
+  const connectDist = 130;
+  let mouse = { x: null, y: null, radius: 170 };
+
+  window.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  }, { passive: true });
+
+  window.addEventListener('mouseout', () => {
+    mouse.x = null;
+    mouse.y = null;
+  }, { passive: true });
+
+  // Mobile touch interaction with background neural network
+  window.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 0) {
+      mouse.x = e.touches[0].clientX;
+      mouse.y = e.touches[0].clientY;
+    }
+  }, { passive: true });
+
+  window.addEventListener('touchend', () => {
+    mouse.x = null;
+    mouse.y = null;
+  }, { passive: true });
+
+  function resizeCanvas() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+    initNodes();
+  }
+
+  function initNodes() {
+    nodes = [];
+    for (let i = 0; i < maxNodes; i++) {
+      nodes.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35,
+        radius: Math.random() * 2 + 1.2,
+        isGold: Math.random() > 0.4
+      });
+    }
+  }
+
+  function drawNetwork() {
+    ctx.clearRect(0, 0, width, height);
+
+    // Connect nodes within proximity
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x;
+        const dy = nodes[i].y - nodes[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < connectDist) {
+          const alpha = (1 - dist / connectDist) * 0.18;
+          ctx.strokeStyle = `rgba(242, 199, 92, ${alpha})`;
+          ctx.lineWidth = 0.8;
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.stroke();
+        }
+      }
+
+      // Connect nodes to mouse position
+      if (mouse.x !== null && mouse.y !== null) {
+        const dx = nodes[i].x - mouse.x;
+        const dy = nodes[i].y - mouse.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < mouse.radius) {
+          const alpha = (1 - dist / mouse.radius) * 0.28;
+          ctx.strokeStyle = `rgba(0, 255, 157, ${alpha})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Draw nodes and update positions
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i];
+      node.x += node.vx;
+      node.y += node.vy;
+
+      if (node.x < 0) node.x = width;
+      if (node.x > width) node.x = 0;
+      if (node.y < 0) node.y = height;
+      if (node.y > height) node.y = 0;
+
+      ctx.fillStyle = node.isGold ? 'rgba(242, 199, 92, 0.75)' : 'rgba(0, 255, 157, 0.65)';
+      ctx.beginPath();
+      ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    requestAnimationFrame(drawNetwork);
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+  drawNetwork();
+}
+
 function initShared() {
+  initProgressBar();
   initHeaderShrink();
   initBurger();
   initReveal();
   initSmoothScroll();
   initHeroDots();
+  initNetworkCanvas();
 }
 
 if (document.readyState === 'loading') {
